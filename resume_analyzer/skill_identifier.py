@@ -1,7 +1,6 @@
 """NLP-based skill identification from resume text."""
 
 import re
-import string
 from typing import Dict, List
 
 # ---------------------------------------------------------------------------
@@ -50,10 +49,7 @@ SKILL_TAXONOMY: Dict[str, List[str]] = {
     ],
 }
 
-# Flat set for quick membership tests
-_ALL_SKILLS: List[str] = [
-    skill for skills in SKILL_TAXONOMY.values() for skill in skills
-]
+# Flat set for quick membership tests (used by get_all_detected_skills).
 
 
 def _normalise(text: str) -> str:
