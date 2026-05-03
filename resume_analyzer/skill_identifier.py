@@ -49,8 +49,6 @@ SKILL_TAXONOMY: Dict[str, List[str]] = {
     ],
 }
 
-# Flat set for quick membership tests (used by get_all_detected_skills).
-
 
 def _normalise(text: str) -> str:
     """Lower-case and collapse extra whitespace."""

@@ -13,7 +13,7 @@ This project analyzes PDF resumes and provides feedback on skills and keywords u
 - Python 3.9+
 - Flask 3
 - PyPDF2 (PDF text extraction)
-- scikit-learn / NLP (skill pattern matching)
+- Regex-based NLP (skill pattern matching)
 - HTML/CSS (responsive frontend)
 
 ## Project Structure
