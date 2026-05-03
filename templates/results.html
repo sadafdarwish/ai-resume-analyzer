@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analysis Results — AI Resume Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="site-title">🤖 AI Resume Analyzer</h1>
+      <p class="site-subtitle">Your analysis results for <strong>{{ filename }}</strong></p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Score card -->
+    <section class="card score-card">
+      <div class="score-circle score-{{ feedback.rating | lower | replace(' ', '-') }}">
+        <span class="score-number">{{ feedback.score }}</span>
+        <span class="score-label">/ 100</span>
+      </div>
+      <div class="score-info">
+        <h2>Overall Score: <span class="badge badge-{{ feedback.rating | lower | replace(' ', '-') }}">{{ feedback.rating }}</span></h2>
+        <p>Your resume scored <strong>{{ feedback.score }} out of 100</strong> based on skill coverage and completeness.</p>
+      </div>
+    </section>
+
+    <!-- Skills by category -->
+    <section class="card">
+      <h2>🔍 Detected Skills</h2>
+      {% if skills_by_category %}
+        <div class="skills-grid">
+          {% for category, skills in skills_by_category.items() %}
+            <div class="skill-category">
+              <h3>{{ category }}</h3>
+              <div class="skill-tags">
+                {% for skill in skills %}
+                  <span class="skill-tag">{{ skill }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="empty-state">No skills were detected in your resume. Make sure to list your technical and soft skills explicitly.</p>
+      {% endif %}
+    </section>
+
+    <!-- Missing categories -->
+    {% if feedback.missing_categories %}
+    <section class="card">
+      <h2>⚠️ Missing Skill Categories</h2>
+      <div class="missing-tags">
+        {% for cat in feedback.missing_categories %}
+          <span class="tag-missing">{{ cat }}</span>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- Strengths -->
+    {% if feedback.strengths %}
+    <section class="card">
+      <h2>✅ Strengths</h2>
+      <ul class="feedback-list strengths-list">
+        {% for item in feedback.strengths %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <!-- Improvements -->
+    {% if feedback.improvements %}
+    <section class="card">
+      <h2>💡 Suggested Improvements</h2>
+      <ul class="feedback-list improvements-list">
+        {% for item in feedback.improvements %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <!-- Resume text preview -->
+    <section class="card">
+      <h2>📄 Resume Text Preview</h2>
+      <pre class="resume-preview">{{ resume_text }}</pre>
+    </section>
+
+    <div class="action-bar">
+      <a href="/" class="btn-primary">Analyze Another Resume</a>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>AI Resume Analyzer &mdash; Powered by Python, Flask &amp; scikit-learn</p>
+    </div>
+  </footer>
+</body>
+</html>

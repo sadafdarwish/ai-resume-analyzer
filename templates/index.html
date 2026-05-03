@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Resume Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="site-title">🤖 AI Resume Analyzer</h1>
+      <p class="site-subtitle">Upload your PDF resume and get instant, actionable feedback on your skills and keywords.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <section class="card upload-card">
+      <h2>Upload Your Resume</h2>
+      <p>Supported format: <strong>PDF</strong> &nbsp;|&nbsp; Max size: <strong>5 MB</strong></p>
+
+      <form method="POST" action="/analyze" enctype="multipart/form-data" class="upload-form">
+        <div class="file-drop-zone" id="dropZone">
+          <span class="drop-icon">📄</span>
+          <p>Drag &amp; drop your PDF here, or click to browse</p>
+          <input
+            type="file"
+            id="resumeFile"
+            name="resume"
+            accept=".pdf"
+            class="file-input"
+            required
+          />
+          <span id="fileName" class="file-name"></span>
+        </div>
+
+        <button type="submit" class="btn-primary">Analyze Resume</button>
+      </form>
+    </section>
+
+    <section class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">📑</span>
+        <h3>Text Extraction</h3>
+        <p>Automatically extracts all text from your PDF resume.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔍</span>
+        <h3>Skill Identification</h3>
+        <p>Identifies skills across programming, data science, cloud, and more.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">💡</span>
+        <h3>Smart Feedback</h3>
+        <p>Provides targeted suggestions to improve your resume's impact.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>AI Resume Analyzer &mdash; Powered by Python, Flask &amp; scikit-learn</p>
+    </div>
+  </footer>
+
+  <script>
+    const input = document.getElementById('resumeFile');
+    const label = document.getElementById('fileName');
+    const dropZone = document.getElementById('dropZone');
+
+    input.addEventListener('change', () => {
+      label.textContent = input.files[0] ? input.files[0].name : '';
+    });
+
+    dropZone.addEventListener('click', () => input.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      const files = e.dataTransfer.files;
+      if (files.length) {
+        input.files = files;
+        label.textContent = files[0].name;
+      }
+    });
+  </script>
+</body>
+</html>
