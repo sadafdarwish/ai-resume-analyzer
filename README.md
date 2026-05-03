@@ -18,10 +18,3 @@ This project analyzes resume text and finds important skills using Python and Fl
 ```bash
 pip install -r requirements.txt
 python app.py
-
-## Example Output
-
-Skills found:
-- Python
-- SQL
-- Machine Learning
